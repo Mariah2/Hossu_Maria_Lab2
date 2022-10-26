@@ -36,6 +36,8 @@ namespace Hossu_Maria_Lab2.Pages.Books
                 return NotFound();
             }
             Book = book;
+            ViewData["AuthorID"] = new SelectList(_context.Set<Author>(), "Id",
+"FirstName");
             ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID",
 "PublisherName");
 

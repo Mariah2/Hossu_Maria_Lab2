@@ -27,7 +27,8 @@ namespace Hossu_Maria_Lab2.Pages.Books
             {
                 Book = await _context.Book
 
-                    .Include(b => b.Publisher)
+                    .Include(a => a.Author)
+                    .Include(b => b.Publisher) 
                     .ToListAsync();
             }
         }
