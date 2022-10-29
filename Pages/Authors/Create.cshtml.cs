@@ -25,7 +25,7 @@ namespace Hossu_Maria_Lab2.Pages.Authors
         }
 
         [BindProperty]
-        public Author Author { get; set; }
+        public Author Author { get; set; } = null!;
         
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD

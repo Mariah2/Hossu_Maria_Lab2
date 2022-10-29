@@ -20,7 +20,7 @@ namespace Hossu_Maria_Lab2.Pages.Authors
         }
 
         [BindProperty]
-      public Author Author { get; set; }
+        public Author Author { get; set; } = null!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,7 +29,7 @@ namespace Hossu_Maria_Lab2.Pages.Authors
                 return NotFound();
             }
 
-            var author = await _context.Author.FirstOrDefaultAsync(m => m.Id == id);
+            var author = await _context.Author.FirstOrDefaultAsync(m => m.ID == id);
 
             if (author == null)
             {

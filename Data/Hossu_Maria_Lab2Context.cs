@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Hossu_Maria_Lab2.Models;
 
 namespace Hossu_Maria_Lab2.Data
@@ -14,12 +10,12 @@ namespace Hossu_Maria_Lab2.Data
         {
         }
 
-        public DbSet<Hossu_Maria_Lab2.Models.Book> Book { get; set; } = default!;
+        public virtual DbSet<Book> Book { get; set; } = null!;
 
-        public DbSet<Hossu_Maria_Lab2.Models.Publisher> Publisher { get; set; }
+        public virtual DbSet<Publisher> Publisher { get; set; } = null!;
 
-        public DbSet<Hossu_Maria_Lab2.Models.Author> Author { get; set; }
+        public virtual DbSet<Author> Author { get; set; } = null!;
 
-        public DbSet<Hossu_Maria_Lab2.Models.Category> Category { get; set; }
+        public virtual DbSet<Category> Category { get; set; } = null!;
     }
 }

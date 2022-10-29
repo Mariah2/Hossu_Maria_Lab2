@@ -30,7 +30,7 @@ namespace Hossu_Maria_Lab2.Pages.Authors
                 return NotFound();
             }
 
-            var author =  await _context.Author.FirstOrDefaultAsync(m => m.Id == id);
+            var author =  await _context.Author.FirstOrDefaultAsync(m => m.ID == id);
             if (author == null)
             {
                 return NotFound();
@@ -56,7 +56,7 @@ namespace Hossu_Maria_Lab2.Pages.Authors
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AuthorExists(Author.Id))
+                if (!AuthorExists(Author.ID))
                 {
                     return NotFound();
                 }
@@ -71,7 +71,7 @@ namespace Hossu_Maria_Lab2.Pages.Authors
 
         private bool AuthorExists(int id)
         {
-          return _context.Author.Any(e => e.Id == id);
+          return _context.Author.Any(e => e.ID == id);
         }
     }
 }

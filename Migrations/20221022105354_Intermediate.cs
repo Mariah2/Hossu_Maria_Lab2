@@ -18,14 +18,14 @@ namespace Hossu_Maria_Lab2.Migrations
                 name: "Author",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Author", x => x.Id);
+                    table.PrimaryKey("PK_Author", x => x.ID);
                 });
 
             migrationBuilder.CreateIndex(
@@ -38,7 +38,7 @@ namespace Hossu_Maria_Lab2.Migrations
                 table: "Book",
                 column: "AuthorId",
                 principalTable: "Author",
-                principalColumn: "Id");
+                principalColumn: "ID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

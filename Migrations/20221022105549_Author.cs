@@ -41,7 +41,7 @@ namespace Hossu_Maria_Lab2.Migrations
                 table: "Book",
                 column: "AuthorID",
                 principalTable: "Author",
-                principalColumn: "Id",
+                principalColumn: "ID",
                 onDelete: ReferentialAction.Cascade);
         }
 
@@ -81,7 +81,7 @@ namespace Hossu_Maria_Lab2.Migrations
                 table: "Book",
                 column: "AuthorId",
                 principalTable: "Author",
-                principalColumn: "Id");
+                principalColumn: "ID");
         }
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,36 +7,55 @@ using Hossu_Maria_Lab2.Models;
 
 namespace Hossu_Maria_Lab2.Pages.Books
 {
-    public class CreateModel : PageModel
+    public class CreateModel : BookCategoriesPageModel
     {
-        private readonly Hossu_Maria_Lab2.Data.Hossu_Maria_Lab2Context _context;
+        private readonly Hossu_Maria_Lab2Context _context;
 
-        public CreateModel(Hossu_Maria_Lab2.Data.Hossu_Maria_Lab2Context context)
+        public CreateModel(Hossu_Maria_Lab2Context context)
         {
             _context = context;
         }
 
         public IActionResult OnGet()
         {
-            ViewData["AuthorID"] = new SelectList(_context.Set<Author>(), "Id", "FirstName");
-            ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID", "PublisherName");
+            ViewData["AuthorID"] = new SelectList(_context.Author, "ID", "FullName");
+            ViewData["PublisherID"] = new SelectList(_context.Publisher, "ID", "PublisherName");
+
+            var book = new Book
+            {
+                BookCategories = new List<BookCategory>()
+            };
+
+            PopulateAssignedCategoryData(_context, book);
+
             return Page();
         }
 
         [BindProperty]
-        public Book Book { get; set; }
+        public Book Book { get; set; } = null!;
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string[] selectedCategories)
         {
-            if (!ModelState.IsValid)
+            if (selectedCategories != null)
             {
-                return Page();
+                Book.BookCategories = new List<BookCategory>();
+
+                foreach (var cat in selectedCategories)
+                {
+                    var catToAdd = new BookCategory
+                    {
+                        CategoryID = int.Parse(cat)
+                    };
+
+                    Book.BookCategories.Add(catToAdd);
+                }
             }
 
             _context.Book.Add(Book);
+
             await _context.SaveChangesAsync();
+
+            PopulateAssignedCategoryData(_context, Book);
 
             return RedirectToPage("./Index");
         }
