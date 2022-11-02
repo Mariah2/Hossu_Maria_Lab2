@@ -54,24 +54,18 @@ namespace Hossu_Maria_Lab2.Pages.Books
             {
                 return NotFound();
             }
+            //aici profa voastra se pisa pe restul chestiilor si facea rost de Book-ul din db dupa ID
+            //adica orice alta proprietate in afara de categories era luata iar din db si ce ai modificat? iti arat imediat
 
-            var bookToUpdate = await _context.Book
-                .Include(b => b.Author)
-                .Include(i => i.Publisher)
-                .Include(i => i.BookCategories)
-                .ThenInclude(i => i.Category)
-                .FirstOrDefaultAsync(s => s.ID == id);
+            //e ceva stricat aici in UpdateBookCategories
 
-            if (bookToUpdate is null)
-            {
-                return NotFound();
-            }
+            _context.Update(Book).State = EntityState.Modified;
 
-            UpdateBookCategories(_context, selectedCategories, bookToUpdate);
+            await UpdateBookCategories(_context, selectedCategories, Book.ID);
 
             await _context.SaveChangesAsync();
 
-            PopulateAssignedCategoryData(_context, bookToUpdate);
+            PopulateAssignedCategoryData(_context, Book);
 
             return RedirectToPage("./Index");
         }

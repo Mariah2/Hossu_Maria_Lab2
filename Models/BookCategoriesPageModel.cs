@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Hossu_Maria_Lab2.Data;
 
 namespace Hossu_Maria_Lab2.Models
@@ -25,43 +26,38 @@ namespace Hossu_Maria_Lab2.Models
                 });
             }
         }
-        public void UpdateBookCategories(Hossu_Maria_Lab2Context context, string[] selectedCategories, Book bookToUpdate)
+        public async Task UpdateBookCategories(Hossu_Maria_Lab2Context context, string[] selectedCategories, int bookId)
         {
-            if (selectedCategories == null)
+            var bookCategories = await context.Set<BookCategory>().Where(bc => bc.BookID == bookId).ToListAsync();
+
+            if (selectedCategories is null)
             {
-                bookToUpdate.BookCategories = new List<BookCategory>();
+                foreach (var bookCategory in bookCategories)
+                {
+                    context.Set<BookCategory>().Remove(bookCategory).State = EntityState.Deleted;
+                }
+
                 return;
             }
-            var selectedCategoriesHS = new HashSet<string>(selectedCategories);
 
-            var bookCategories = new HashSet<int>(bookToUpdate.BookCategories.Select(c => c.Category.ID));
+            var categoriesToDelete = bookCategories.Where(bc => !selectedCategories.Contains(bc.CategoryID.ToString()));
 
-            foreach (var cat in context.Category)
+            foreach (var bookCategory in categoriesToDelete)
             {
-                if (selectedCategoriesHS.Contains(cat.ID.ToString()))
-                {
-                    if (!bookCategories.Contains(cat.ID))
-                    {
-                        bookToUpdate.BookCategories.Add(
-                        new BookCategory
-                        {
-                            BookID = bookToUpdate.ID,
-                            CategoryID = cat.ID
-                        });
-                    }
-                }
-                else
-                {
-                    if (bookCategories.Contains(cat.ID))
-                    {
-                        BookCategory? courseToRemove = bookToUpdate.BookCategories
-                            .SingleOrDefault(i => i.CategoryID == cat.ID);
+                context.Set<BookCategory>().Remove(bookCategory).State = EntityState.Deleted;
+            }
 
-                        if (courseToRemove is not null)
-                        {
-                            context.Remove(courseToRemove);
-                        }
-                    }
+            foreach (var categoryId in selectedCategories)
+            {
+                int parsedCategoryId = int.Parse(categoryId);
+
+                if (bookCategories.Find(b => b.CategoryID == parsedCategoryId) is null)
+                {
+                    context.Set<BookCategory>().Add(new BookCategory
+                    {
+                        BookID = bookId,
+                        CategoryID = parsedCategoryId
+                    }).State = EntityState.Added;
                 }
             }
         }
