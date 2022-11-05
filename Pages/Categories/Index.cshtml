@@ -20,17 +20,73 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Category) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryName)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.CategoryData.Categories)
+        {
+            string selectedRow = "";
+            if (item.ID == Model.CategoryID)
+            {
+                selectedRow = "table-success";
+            }
+            <tr class="@selectedRow">
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryName)
+                </td>
+
+                <td>
+                    <a asp-page="./Index" asp-route-id="@item.ID">Select</a> |
+                    <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+@if (Model.CategoryData.BookCategories is not null)
+{
+    <h3>All books with their authors from a selected category</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="width: 50%">
+                    @Html.DisplayNameFor(model => model.BookData.Title)
+                </th>
+                <th style="width: 50%">
+                    @Html.DisplayNameFor(model => model.BookData.Author.FullName)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CategoryData.Categories)
+            {
+                string selectedRow = "";
+
+                if (item.ID == Model.CategoryID)
+                {
+                    selectedRow = "table-success";
+                }
+
+                <tr class="@selectedRow">
+                    <td colspan="2" style="padding: 0;">
+                        @{
+                            foreach (var bc in item.BookCategories)
+                            {
+                                <table width="100%">
+                                    <tr>
+                                        <td style="width: 50%; padding: .5em;">
+                                            @Html.DisplayFor(modelItem => bc.Book.Title)
+                                        </td>
+
+                                        <td style ="width: 50%; padding: .5em;">
+                                            @Html.DisplayFor(modelItem => bc.Book.Author.FullName)
+                                        </td>
+                                    </tr>
+                                </table>
+                            }
+                         }
+                        </td>
+                    </tr>
+            }
+            </tbody>
+        </table>
+}

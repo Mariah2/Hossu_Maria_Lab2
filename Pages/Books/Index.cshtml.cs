@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Hossu_Maria_Lab2.Data;
 using Hossu_Maria_Lab2.Models;
-using Microsoft.Data.SqlClient;
 
 namespace Hossu_Maria_Lab2.Pages.Books
 {
