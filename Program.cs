@@ -1,12 +1,24 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Hossu_Maria_Lab2.Data;
+using Microsoft.AspNetCore.Identity;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<Hossu_Maria_Lab2Context>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Hossu_Maria_Lab2Context") ?? throw new InvalidOperationException("Connection string 'Hossu_Maria_Lab2Context' not found.")));
+
+options.UseSqlServer(builder.Configuration.GetConnectionString("Hossu_Maria_Lab2Context") ??
+throw new InvalidOperationException("Connectionstring 'Hossu_Maria_Lab2Context' not found.")));
+
+builder.Services.AddDbContext<LibraryIdentityContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("Hossu_Maria_Lab2Context") ??
+throw new InvalidOperationException("Connectionstring 'Hossu_Maria_Lab2Context' not found.")));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+options.SignIn.RequireConfirmedAccount = true)
+ .AddEntityFrameworkStores<LibraryIdentityContext>();
+
 
 var app = builder.Build();
 
@@ -22,6 +34,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication(); ;
 
 app.UseAuthorization();
 

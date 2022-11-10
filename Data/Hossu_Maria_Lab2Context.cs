@@ -17,5 +17,9 @@ namespace Hossu_Maria_Lab2.Data
         public virtual DbSet<Author> Author { get; set; } = null!;
 
         public virtual DbSet<Category> Category { get; set; } = null!;
+
+        public DbSet<Hossu_Maria_Lab2.Models.Member> Member { get; set; }
+
+        public DbSet<Hossu_Maria_Lab2.Models.Borrowing> Borrowing { get; set; }
     }
 }
