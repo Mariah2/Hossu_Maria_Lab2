@@ -168,11 +168,7 @@ namespace Hossu_Maria_Lab2.Areas.Identity.Pages.Account
                error.Description);
             }
 
-            return RedirectToPage("Register", new
-            {
-                email = Input.Email,
-                returnUrl = returnUrl
-            });
+            return Page();
         }
 
         private IdentityUser CreateUser()

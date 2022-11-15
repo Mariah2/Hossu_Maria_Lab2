@@ -29,7 +29,10 @@ namespace Hossu_Maria_Lab2.Pages.Borrowings
                 return NotFound();
             }
 
-            var borrowing = await _context.Borrowing.FirstOrDefaultAsync(m => m.ID == id);
+            var borrowing = await _context.Borrowing
+                .Include(a => a.Book)
+                .Include(a => a.Member)
+                .FirstOrDefaultAsync(m => m.ID == id);
 
             if (borrowing == null)
             {
